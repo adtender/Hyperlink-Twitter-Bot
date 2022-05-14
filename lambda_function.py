@@ -22,20 +22,22 @@ class TWEET:
         if config.keepLogs:
             logging.basicConfig(filename='logs.log', format='%(asctime)s - %(message)s', level=logging.INFO)
 
-        try:
-            if len(self.arg) == 2:
+        if len(self.arg) == 2:
+            arg = " " + str(self.arg[1])
+        elif len(self.arg) == 3:
+            self.videoSource = str(self.arg[2])
+            if len(self.arg[1]) > 0:
                 arg = " " + str(self.arg[1])
-            elif len(self.arg) == 3:
-                self.videoSource = str(self.arg[2])
-            
-            self.api.update_status(self.videoSource + arg)
-            tweetPostedMessage = "Tweet posted: https://twitter.com/" + config.account + "/status/" + tweet.id_str
-            if config.keepLogs:
-                logging.info(tweetPostedMessage)
-            print(tweetPostedMessage)
-        except:
-            print()
+        
+        self.api.update_status(self.videoSource + arg)
+        tweetPostedMessage = "Tweet posted: https://twitter.com/" + config.account + "/status/" + tweet.id_str
+        if config.keepLogs:
+            logging.info(tweetPostedMessage)
+        print(tweetPostedMessage)
 
-if __name__ == "__main__":
-    tweet = tweet.TWEET(sys.argv)
+def lambda_handler(event, context):
+#if __name__ == "__main__":
+    tweet = TWEET(sys.argv)
     tweet.tweet_media("")
+
+lambda_handler("", "")
